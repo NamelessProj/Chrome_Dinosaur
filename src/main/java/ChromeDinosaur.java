@@ -123,12 +123,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         GAMELOOP.start();
 
         // Set the cactus placement timer
-        PLACE_CACTUS_TIMER = new Timer(1_500, new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                placeCactus();
-            }
-        });
+        PLACE_CACTUS_TIMER = new Timer(1_500, _ -> placeCactus());
         PLACE_CACTUS_TIMER.start();
     }
 
