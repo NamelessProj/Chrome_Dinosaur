@@ -172,7 +172,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
      * Clouds appear in the upper half of the screen with random widths and heights.
      */
     private void placeClouds() {
-        int cloudY = (int) (Math.random() * (BOARD_HEIGHT / 2)); // Clouds appear in the upper half of the screen
+        int cloudY = (int) (Math.random() * ((double) BOARD_HEIGHT / 2)); // Clouds appear in the upper half of the screen
         int cloudWidth = (int) (Math.random() * 100 + 50); // Random width between 50 and 150
         int cloudHeight = (int) (CLOUD_IMG.getHeight(null) * ((double) cloudWidth / CLOUD_IMG.getWidth(null))); // Maintain aspect ratio
         Block cloud = new Block(CACTUS_X, cloudY, cloudWidth, cloudHeight, CLOUD_IMG);
