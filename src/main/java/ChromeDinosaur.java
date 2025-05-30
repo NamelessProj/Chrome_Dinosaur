@@ -26,6 +26,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     public final Image GROUND_IMG;
     private final int GROUND_HEIGHT; // Height of the ground image
     private final int GROUND_WIDTH; // Width of the ground image
+    // Cloud image
+    public final Image CLOUD_IMG;
+    private final ArrayList<Block> cloudArray;
 
     // Dinosaur
     // Set dinosaur dimensions and position
@@ -62,6 +65,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     // Game loop timer
     private final Timer GAMELOOP;
     private final Timer PLACE_CACTUS_TIMER;
+    private final Timer PLACE_CLOUD_TIMER;
 
     /**
      * Constructor for ChromeDinosaur class.
@@ -86,6 +90,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         CACTUS_SMALL_3_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus3.png"))).getImage();
         PTERODACTYL_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/bird.gif"))).getImage();
         GROUND_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/track.png"))).getImage();
+        CLOUD_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cloud.png"))).getImage();
 
         // Set ground dimensions
         this.GROUND_HEIGHT = GROUND_IMG.getHeight(null); // Height of the ground image
@@ -109,6 +114,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         this.PTERODACTYL_HEIGHT = 60;
         this.PTERODACTYL_WIDTH = 90;
 
+        // Initialize the cloud array
+        this.cloudArray = new ArrayList<>();
+
         // Initialize the dinosaur block
         this.DINOSAUR = new Block(DINOSAUR_X, DINOSAUR_Y, DINOSAUR_WIDTH, DINOSAUR_HEIGHT, DINOSAUR_IMG);
 
@@ -124,7 +132,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
         // Set the cactus placement timer
         PLACE_CACTUS_TIMER = new Timer(1_500, _ -> placeCactus());
+        PLACE_CLOUD_TIMER = new Timer(3_000, _ -> placeClouds());
         PLACE_CACTUS_TIMER.start();
+        PLACE_CLOUD_TIMER.start();
     }
 
     /**
@@ -158,6 +168,18 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     /**
+     * Places clouds on the game board at random positions.
+     * Clouds appear in the upper half of the screen with random widths and heights.
+     */
+    private void placeClouds() {
+        int cloudY = (int) (Math.random() * (BOARD_HEIGHT / 2)); // Clouds appear in the upper half of the screen
+        int cloudWidth = (int) (Math.random() * 100 + 50); // Random width between 50 and 150
+        int cloudHeight = (int) (CLOUD_IMG.getHeight(null) * ((double) cloudWidth / CLOUD_IMG.getWidth(null))); // Maintain aspect ratio
+        Block cloud = new Block(CACTUS_X, cloudY, cloudWidth, cloudHeight, CLOUD_IMG);
+        cloudArray.add(cloud);
+    }
+
+    /**
      * Paints the game components.
      * @param g The Graphics object used for painting.
      */
@@ -175,6 +197,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         g.drawImage(GROUND_IMG, groundOffsetX, BOARD_HEIGHT - GROUND_HEIGHT, GROUND_WIDTH, GROUND_HEIGHT, null);
         // Draw the ground again to create a seamless effect
         g.drawImage(GROUND_IMG, groundOffsetX + GROUND_WIDTH, BOARD_HEIGHT - GROUND_HEIGHT, GROUND_WIDTH, GROUND_HEIGHT, null);
+
+        // Draw the clouds
+        for (Block cloud : cloudArray) {
+            g.drawImage(cloud.image, cloud.x, cloud.y, cloud.width, cloud.height, null);
+        }
 
         // Draw the dinosaur
         g.drawImage(DINOSAUR.image, DINOSAUR.x, DINOSAUR.y, DINOSAUR.width, DINOSAUR.height, null);
@@ -243,6 +270,14 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // Remove pterodactyls that are off-screen
         pterodactylArray.removeIf(pterodactyl -> pterodactyl.x + pterodactyl.width < 0);
 
+        // Move the clouds
+        for (Block cloud : cloudArray) {
+            cloud.x += (int) (velocityX * 0.5); // Clouds move slower than cacti
+        }
+
+        // Remove clouds that are off-screen
+        cloudArray.removeIf(cloud -> cloud.x + cloud.width < 0);
+
         // Move the ground
         groundOffsetX += velocityX;
         if (groundOffsetX <= -GROUND_WIDTH) {
@@ -276,6 +311,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         this.repaint();
         if (gameOver) {
             PLACE_CACTUS_TIMER.stop();
+            PLACE_CLOUD_TIMER.stop();
             GAMELOOP.stop();
         }
     }
@@ -298,6 +334,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
                 gameOver = false;
                 score = 0;
                 GAMELOOP.start();
+                PLACE_CLOUD_TIMER.start();
                 PLACE_CACTUS_TIMER.start();
             }
         }
