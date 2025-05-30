@@ -20,6 +20,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     public final Image CACTUS_SMALL_1_IMG;
     public final Image CACTUS_SMALL_2_IMG;
     public final Image CACTUS_SMALL_3_IMG;
+    // Pterodactyl images
+    public final Image PTERODACTYL_IMG;
     // Ground image
     public final Image GROUND_IMG;
     private final int GROUND_HEIGHT; // Height of the ground image
@@ -41,6 +43,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private final int CACTUS_X;
     private final int CACTUS_Y;
     private final ArrayList<Block> cactusArray;
+
+    // Pterodactyls
+    private final int PTERODACTYL_WIDTH; // Width of the pterodactyl image
+    private final int PTERODACTYL_HEIGHT; // Height of the pterodactyl image
+    private final ArrayList<Block> pterodactylArray;
 
     // Physics
     private int velocityX = -12; // Horizontal velocity, for the cactus movement
@@ -77,6 +84,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         CACTUS_SMALL_1_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus1.png"))).getImage();
         CACTUS_SMALL_2_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus2.png"))).getImage();
         CACTUS_SMALL_3_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus3.png"))).getImage();
+        PTERODACTYL_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/bird.gif"))).getImage();
         GROUND_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/track.png"))).getImage();
 
         // Set ground dimensions
@@ -97,11 +105,18 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         this.CACTUS_X = 700;
         this.CACTUS_Y = BOARD_HEIGHT - CACTUS_HEIGHT; // Y position of the cactus
 
+        // Set pterodactyl dimensions and position
+        this.PTERODACTYL_HEIGHT = 60;
+        this.PTERODACTYL_WIDTH = 90;
+
         // Initialize the dinosaur block
         this.DINOSAUR = new Block(DINOSAUR_X, DINOSAUR_Y, DINOSAUR_WIDTH, DINOSAUR_HEIGHT, DINOSAUR_IMG);
 
         // Initialize the cactus array
         this.cactusArray = new ArrayList<>();
+
+        // Initialize the pterodactyl array
+        this.pterodactylArray = new ArrayList<>();
 
         // Set the game loop timer
         GAMELOOP = new Timer(1_000 / 60, this); // 60 FPS
@@ -126,6 +141,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             return;
 
         Block cactus = null;
+        Block pterodactyl = null;
         double placeCactusChance = Math.random();
         if (placeCactusChance > .90) { // 10% chance
             cactus = new Block(CACTUS_X, CACTUS_Y, CACTUS_3_WIDTH, CACTUS_HEIGHT, CACTUS_SMALL_3_IMG);
@@ -133,10 +149,17 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             cactus = new Block(CACTUS_X, CACTUS_Y, CACTUS_2_WIDTH, CACTUS_HEIGHT, CACTUS_SMALL_2_IMG);
         } else if (placeCactusChance > .50) { // 20% chance
             cactus = new Block(CACTUS_X, CACTUS_Y, CACTUS_1_WIDTH, CACTUS_HEIGHT, CACTUS_SMALL_1_IMG);
+        } else if (placeCactusChance > .40) { // 10% chance
+            // Add a pterodactyl instead of a cactus
+            int pterodactylY = (int) (Math.random() * (BOARD_HEIGHT - PTERODACTYL_HEIGHT - 10)); // Random Y position
+            pterodactyl = new Block(CACTUS_X, pterodactylY, PTERODACTYL_WIDTH, PTERODACTYL_HEIGHT, PTERODACTYL_IMG);
         }
         
         if (cactus != null)
             cactusArray.add(cactus);
+
+        if (pterodactyl != null)
+            pterodactylArray.add(pterodactyl);
     }
 
     /**
@@ -164,6 +187,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // Draw the cacti
         for (Block cactus : cactusArray) {
             g.drawImage(cactus.image, cactus.x, cactus.y, cactus.width, cactus.height, null);
+        }
+
+        // Draw the pterodactyls
+        for (Block pterodactyl : pterodactylArray) {
+            g.drawImage(pterodactyl.image, pterodactyl.x, pterodactyl.y, pterodactyl.width, pterodactyl.height, null);
         }
 
         // Draw the score
@@ -206,6 +234,19 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
         // Remove cacti that are off-screen
         cactusArray.removeIf(cactus -> cactus.x + cactus.width < 0);
+
+        // Move the pterodactyls
+        for (Block pterodactyl : pterodactylArray) {
+            pterodactyl.x += (int) (velocityX * 1.2); // Pterodactyls move faster than cacti
+
+            if (collision(DINOSAUR, pterodactyl)) {
+                gameOver = true; // Set game over flag
+                DINOSAUR.image = DINOSAUR_DEAD_IMG; // Change dinosaur image to dead
+            }
+        }
+
+        // Remove pterodactyls that are off-screen
+        pterodactylArray.removeIf(pterodactyl -> pterodactyl.x + pterodactyl.width < 0);
 
         // Move the ground
         groundOffsetX += velocityX;
@@ -258,6 +299,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
                 DINOSAUR.image = DINOSAUR_IMG;
                 velocityY = 0;
                 cactusArray.clear();
+                pterodactylArray.clear();
                 gameOver = false;
                 score = 0;
                 GAMELOOP.start();
