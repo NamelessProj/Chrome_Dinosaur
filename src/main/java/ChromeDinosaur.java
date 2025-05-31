@@ -16,6 +16,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     public final Image DINOSAUR_IMG;
     public final Image DINOSAUR_DEAD_IMG;
     public final Image DINOSAUR_JUMP_IMG;
+    public final Image DINOSAUR_DUCK_IMG;
     // Cactus images
     public final Image CACTUS_SMALL_1_IMG;
     public final Image CACTUS_SMALL_2_IMG;
@@ -33,7 +34,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     // Dinosaur
     // Set dinosaur dimensions and position
     private final int DINOSAUR_WIDTH;
+    private final int DINOSAUR_DUCK_WIDTH;
     private final int DINOSAUR_HEIGHT;
+    private final int DINOSAUR_DUCK_HEIGHT;
     private final int DINOSAUR_X;
     private final int DINOSAUR_Y;
     private final Block DINOSAUR;
@@ -66,6 +69,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private final Timer GAMELOOP;
     private final Timer PLACE_CACTUS_TIMER;
     private final Timer PLACE_CLOUD_TIMER;
+    private boolean isDucking = false;
 
     /**
      * Constructor for ChromeDinosaur class.
@@ -85,6 +89,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         DINOSAUR_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/dino-run.gif"))).getImage();
         DINOSAUR_DEAD_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/dino-dead.png"))).getImage();
         DINOSAUR_JUMP_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/dino-jump.png"))).getImage();
+        DINOSAUR_DUCK_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/dino-duck.gif"))).getImage();
         CACTUS_SMALL_1_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus1.png"))).getImage();
         CACTUS_SMALL_2_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus2.png"))).getImage();
         CACTUS_SMALL_3_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cactus3.png"))).getImage();
@@ -99,6 +104,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // Set dinosaur dimensions and position
         this.DINOSAUR_WIDTH = 88; // Width of the dinosaur image
         this.DINOSAUR_HEIGHT = 94; // Height of the dinosaur image
+        this.DINOSAUR_DUCK_WIDTH = 118; // Width of the ducking dinosaur image
+        this.DINOSAUR_DUCK_HEIGHT = 60; // Height of the ducking dinosaur image
         this.DINOSAUR_X = 50; // X position of the dinosaur
         this.DINOSAUR_Y = BOARD_HEIGHT - DINOSAUR_HEIGHT - 10; // Y position of the dinosaur, 10 pixels above the bottom
 
@@ -204,7 +211,12 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
 
         // Draw the dinosaur
-        g.drawImage(DINOSAUR.image, DINOSAUR.x, DINOSAUR.y, DINOSAUR.width, DINOSAUR.height, null);
+        if (isDucking && DINOSAUR.y == DINOSAUR_Y) {
+            int yPos = DINOSAUR_Y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT); // Adjust Y position for ducking
+            g.drawImage(DINOSAUR_DUCK_IMG, DINOSAUR.x, yPos, DINOSAUR_DUCK_WIDTH, DINOSAUR_DUCK_HEIGHT, null);
+        } else {
+            g.drawImage(DINOSAUR.image, DINOSAUR.x, DINOSAUR.y, DINOSAUR.width, DINOSAUR.height, null);
+        }
 
         // Draw the cacti
         for (Block cactus : cactusArray) {
@@ -296,13 +308,18 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
     /**
      * Checks for collision between two blocks.
-     * @param a The first block (Dinosaur).
-     * @param b The second block (Cactus).
+     * @param dinosaur The first block (Dinosaur).
+     * @param b The second block (Cactus / Pterodactyl).
      * @return true if there is a collision, false otherwise.
      */
-    private boolean collision(Block a, Block b) {
-        return a.x < b.x + b.width && a.x + a.width > b.x &&
-               a.y < b.y + b.height && a.y + a.height > b.y;
+    private boolean collision(Block dinosaur, Block b) {
+        if (isDucking && dinosaur.y == DINOSAUR_Y)
+            return dinosaur.x < b.x + b.width && dinosaur.x + DINOSAUR_DUCK_WIDTH > b.x &&
+                    dinosaur.y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT) < b.y + b.height &&
+                    dinosaur.y + DINOSAUR_DUCK_HEIGHT > b.y;
+
+        return dinosaur.x < b.x + b.width && dinosaur.x + dinosaur.width > b.x &&
+                dinosaur.y < b.y + b.height && dinosaur.y + dinosaur.height > b.y;
     }
 
     @Override
@@ -338,11 +355,17 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
                 PLACE_CACTUS_TIMER.start();
             }
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+            isDucking = true;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+            isDucking = false;
     }
 
     @Override
     public void keyTyped(KeyEvent e) {}
-
-    @Override
-    public void keyReleased(KeyEvent e) {}
 }
