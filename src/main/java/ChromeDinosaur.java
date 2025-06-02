@@ -237,9 +237,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             g.drawString(String.valueOf(score), 10, 30);
         }
 
-        // Draw the high score
+        // Draw the high score in the top right corner
         g.setFont(new Font("Courrier", Font.PLAIN, 19));
-        g.drawString("High Score: " + highScore, BOARD_WIDTH / 2, 30);
+        g.drawString("High Score: " + highScore, BOARD_WIDTH - 200, 20);
     }
 
     /**
