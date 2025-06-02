@@ -334,7 +334,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
             if (DINOSAUR.y == DINOSAUR_Y) {
                 velocityY = -17;
                 DINOSAUR.image = DINOSAUR_JUMP_IMG; // Change to jump image
@@ -355,13 +355,13 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             }
         }
 
-        if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+        if (e.getKeyCode() == KeyEvent.VK_DOWN)
             isDucking = true;
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+        if (e.getKeyCode() == KeyEvent.VK_DOWN)
             isDucking = false;
     }
 
