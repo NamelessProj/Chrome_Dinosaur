@@ -210,6 +210,11 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             g.drawImage(cloud.image, cloud.x, cloud.y, cloud.width, cloud.height, null);
         }
 
+        // Write the commands in the bottom center
+        g.setColor(new Color(100, 100, 100));
+        g.setFont(new Font("Courrier", Font.BOLD, 15));
+        g.drawString("Press UP to jump, DOWN to duck, R to restart", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
+
         // Draw the dinosaur
         if (isDucking && DINOSAUR.y == DINOSAUR_Y) {
             int yPos = DINOSAUR_Y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT); // Adjust Y position for ducking
