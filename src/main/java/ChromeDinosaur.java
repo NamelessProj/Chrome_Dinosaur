@@ -343,6 +343,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             }
             case KeyEvent.VK_DOWN -> {
                 isDucking = true;
+                // If ducking while in the air, velocityY is increased to simulate falling faster
+                if (DINOSAUR.y < DINOSAUR_Y)
+                    velocityY += GRAVITY * 8; // Increase falling speed while ducking
             }
             case KeyEvent.VK_R -> {
                 if (gameOver) {
