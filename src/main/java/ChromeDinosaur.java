@@ -334,29 +334,32 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (DINOSAUR.y == DINOSAUR_Y) {
-                velocityY = -17;
-                DINOSAUR.image = DINOSAUR_JUMP_IMG; // Change to jump image
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> {
+                if (DINOSAUR.y == DINOSAUR_Y) {
+                    velocityY = -17;
+                    DINOSAUR.image = DINOSAUR_JUMP_IMG; // Change to jump image
+                }
             }
-
-            if (gameOver) {
-                // Reset the game
-                DINOSAUR.y = DINOSAUR_Y;
-                DINOSAUR.image = DINOSAUR_IMG;
-                velocityY = 0;
-                cactusArray.clear();
-                pterodactylArray.clear();
-                gameOver = false;
-                score = 0;
-                GAMELOOP.start();
-                PLACE_CLOUD_TIMER.start();
-                PLACE_CACTUS_TIMER.start();
+            case KeyEvent.VK_DOWN -> {
+                isDucking = true;
+            }
+            case KeyEvent.VK_R -> {
+                if (gameOver) {
+                    // Reset the game
+                    DINOSAUR.y = DINOSAUR_Y;
+                    DINOSAUR.image = DINOSAUR_IMG;
+                    velocityY = 0;
+                    cactusArray.clear();
+                    pterodactylArray.clear();
+                    gameOver = false;
+                    score = 0;
+                    GAMELOOP.start();
+                    PLACE_CLOUD_TIMER.start();
+                    PLACE_CACTUS_TIMER.start();
+                }
             }
         }
-
-        if (e.getKeyCode() == KeyEvent.VK_DOWN)
-            isDucking = true;
     }
 
     @Override
