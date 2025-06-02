@@ -211,7 +211,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         }
 
         // Write the commands in the bottom center
-        g.setColor(new Color(100, 100, 100));
+        g.setColor(new Color(5, 90, 185));
         g.setFont(new Font("Courrier", Font.BOLD, 15));
         g.drawString("Press UP to jump, DOWN to duck, R to restart", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
 
