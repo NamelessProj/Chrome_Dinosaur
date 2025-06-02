@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Chrome_Dinosaure:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Chrome_Dinosaure_jar</output-path>
+    <root id="archive" name="Chrome_Dinosaure.jar">
+      <element id="module-output" name="Chrome_Dinosaure" />
+    </root>
+  </artifact>
+</component>
