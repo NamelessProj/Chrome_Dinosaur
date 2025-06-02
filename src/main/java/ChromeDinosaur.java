@@ -292,9 +292,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
         // Move the ground
         groundOffsetX += velocityX;
-        if (groundOffsetX <= -GROUND_WIDTH) {
+        if (groundOffsetX <= -GROUND_WIDTH)
             groundOffsetX += GROUND_WIDTH; // Reset ground offset when it goes off-screen
-        }
 
         // Score calculation
         score++;
