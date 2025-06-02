@@ -1,3 +1,12 @@
+<p align="center">
+<img src="https://img.shields.io/badge/Java-^23.0.2-orange" alt="Java version"/>
+</p>
+
+<p align="center">
+<img src="https://img.shields.io/github/license/NamelessProj/Chrome_Dinosaur" alt="licence"/>
+<img src="https://img.shields.io/github/repo-size/NamelessProj/Chrome_Dinosaur" alt="repo size"/>
+</p>
+
 # Chrome Dinosaur Game (Java)
 A simple clone of the Chrome Dinosaur offline game, written in Java using Swing.
 
@@ -32,8 +41,8 @@ A simple clone of the Chrome Dinosaur offline game, written in Java using Swing.
         java -jar target/Chrome_Dinosaure-1.0-SNAPSHOT.jar
       ```
 3. **Controls:**
-    - `Space`: Jump / Restart after game over
-    - `Shift`: Duck
+    - `Key Up`: Jump / Restart after game over
+    - `Key Down`: Duck
 
 ## Project Structure
 - [`src/main/java/ChromeDinosaur.java`](./src/main/java/ChromeDinosaur.java) - Main game logic and rendering
