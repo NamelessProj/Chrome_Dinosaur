@@ -30,6 +30,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     // Cloud image
     public final Image CLOUD_IMG;
     private final ArrayList<Block> cloudArray;
+    // UI elements
+    public final Image GAME_OVER_IMG;
 
     // Dinosaur
     // Set dinosaur dimensions and position
@@ -96,6 +98,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         PTERODACTYL_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/bird.gif"))).getImage();
         GROUND_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/track.png"))).getImage();
         CLOUD_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cloud.png"))).getImage();
+        GAME_OVER_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/game-over.png"))).getImage();
 
         // Set ground dimensions
         this.GROUND_HEIGHT = GROUND_IMG.getHeight(null); // Height of the ground image
@@ -210,11 +213,6 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             g.drawImage(cloud.image, cloud.x, cloud.y, cloud.width, cloud.height, null);
         }
 
-        // Write the commands in the bottom center
-        g.setColor(new Color(5, 90, 185));
-        g.setFont(new Font("Courrier", Font.BOLD, 15));
-        g.drawString("Press UP to jump, DOWN to duck, R to restart", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
-
         // Draw the dinosaur
         if (isDucking && DINOSAUR.y == DINOSAUR_Y) {
             int yPos = DINOSAUR_Y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT); // Adjust Y position for ducking
@@ -233,18 +231,27 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             g.drawImage(pterodactyl.image, pterodactyl.x, pterodactyl.y, pterodactyl.width, pterodactyl.height, null);
         }
 
+        // Write the commands in the bottom center
+        g.setColor(new Color(5, 90, 185));
+        g.setFont(new Font("Courrier", Font.BOLD, 15));
+        g.drawString("Press UP to jump, DOWN to duck, R to restart", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
+
         // Draw the score
         g.setColor(Color.BLACK);
         g.setFont(new Font("Courrier", Font.PLAIN, 23));
-        if (gameOver) {
-            g.drawString("Game Over: " + score, 10, 30);
-        } else {
-            g.drawString(String.valueOf(score), 10, 30);
-        }
+        g.drawString(String.valueOf(score), 10, 30);
 
         // Draw the high score in the top right corner
         g.setFont(new Font("Courrier", Font.PLAIN, 19));
         g.drawString("High Score: " + highScore, BOARD_WIDTH - 200, 20);
+
+        // If the game is over, draw the game over image
+        if (gameOver) {
+            g.drawImage(GAME_OVER_IMG, BOARD_WIDTH / 2 - GAME_OVER_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 - GAME_OVER_IMG.getHeight(null) / 2, null);
+            g.setFont(new Font("Courrier", Font.BOLD, 20));
+            g.setColor(Color.RED);
+            g.drawString("Press R to restart", BOARD_WIDTH / 2 - 100, BOARD_HEIGHT / 2 + GAME_OVER_IMG.getHeight(null) / 2 + 30);
+        }
     }
 
     /**
