@@ -336,6 +336,22 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
                 dinosaur.y < b.y + b.height && dinosaur.y + dinosaur.height > b.y;
     }
 
+    /**
+     * Resets the game to its initial state.
+     */
+    private void resetGame() {
+        DINOSAUR.y = DINOSAUR_Y;
+        DINOSAUR.image = DINOSAUR_IMG;
+        velocityY = 0;
+        cactusArray.clear();
+        pterodactylArray.clear();
+        gameOver = false;
+        score = 0;
+        GAMELOOP.start();
+        PLACE_CLOUD_TIMER.start();
+        PLACE_CACTUS_TIMER.start();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         move();
@@ -363,19 +379,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
                     velocityY += GRAVITY * 8; // Increase falling speed while ducking
             }
             case KeyEvent.VK_R -> {
-                if (gameOver) {
-                    // Reset the game
-                    DINOSAUR.y = DINOSAUR_Y;
-                    DINOSAUR.image = DINOSAUR_IMG;
-                    velocityY = 0;
-                    cactusArray.clear();
-                    pterodactylArray.clear();
-                    gameOver = false;
-                    score = 0;
-                    GAMELOOP.start();
-                    PLACE_CLOUD_TIMER.start();
-                    PLACE_CACTUS_TIMER.start();
-                }
+                if (gameOver)
+                    resetGame(); // Reset the game if it is over
             }
         }
     }
