@@ -273,6 +273,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             if (collision(DINOSAUR, cactus)) {
                 gameOver = true; // Set game over flag
                 DINOSAUR.image = DINOSAUR_DEAD_IMG; // Change dinosaur image to dead
+                return; // Exit the method to prevent further processing
             }
         }
 
@@ -286,6 +287,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             if (collision(DINOSAUR, pterodactyl)) {
                 gameOver = true; // Set game over flag
                 DINOSAUR.image = DINOSAUR_DEAD_IMG; // Change dinosaur image to dead
+                return; // Exit the method to prevent further processing
             }
         }
 
