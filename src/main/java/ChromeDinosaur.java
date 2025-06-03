@@ -32,6 +32,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private final ArrayList<Block> cloudArray;
     // UI elements
     public final Image GAME_OVER_IMG;
+    public final Image RESET_IMG;
 
     // Dinosaur
     // Set dinosaur dimensions and position
@@ -99,6 +100,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         GROUND_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/track.png"))).getImage();
         CLOUD_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/cloud.png"))).getImage();
         GAME_OVER_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/game-over.png"))).getImage();
+        RESET_IMG = new ImageIcon(Objects.requireNonNull(getClass().getResource("images/reset.png"))).getImage();
 
         // Set ground dimensions
         this.GROUND_HEIGHT = GROUND_IMG.getHeight(null); // Height of the ground image
@@ -246,9 +248,10 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // If the game is over, draw the game over image
         if (gameOver) {
             g.drawImage(GAME_OVER_IMG, BOARD_WIDTH / 2 - GAME_OVER_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 - GAME_OVER_IMG.getHeight(null) / 2, null);
+            g.drawImage(RESET_IMG, BOARD_WIDTH / 2 - RESET_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 + GAME_OVER_IMG.getHeight(null) / 2 + 10, null);
             g.setFont(new Font("Courrier", Font.BOLD, 20));
-            g.setColor(Color.RED);
-            g.drawString("Press R to restart", BOARD_WIDTH / 2 - 100, BOARD_HEIGHT / 2 + GAME_OVER_IMG.getHeight(null) / 2 + 30);
+            g.setColor(new Color(255, 0, 0, 95));
+            g.drawString("Press R to restart", BOARD_WIDTH / 2 - 100, 75);
         }
     }
 
