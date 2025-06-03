@@ -117,7 +117,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         this.CACTUS_2_WIDTH = 69;
         this.CACTUS_3_WIDTH = 102;
         this.CACTUS_HEIGHT = 70; // Height of the cactus images
-        this.CACTUS_X = 700;
+        this.CACTUS_X = BOARD_WIDTH;
         this.CACTUS_Y = BOARD_HEIGHT - CACTUS_HEIGHT; // Y position of the cactus
 
         // Set pterodactyl dimensions and position
@@ -142,7 +142,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
         // Set the cactus placement timer
         PLACE_CACTUS_TIMER = new Timer(1_500, _ -> placeCactus());
-        PLACE_CLOUD_TIMER = new Timer(3_000, _ -> placeClouds());
+        PLACE_CLOUD_TIMER = new Timer(2_000, _ -> placeClouds());
         PLACE_CACTUS_TIMER.start();
         PLACE_CLOUD_TIMER.start();
     }
