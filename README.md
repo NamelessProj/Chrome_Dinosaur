@@ -41,8 +41,9 @@ A simple clone of the Chrome Dinosaur offline game, written in Java using Swing.
         java -jar target/Chrome_Dinosaure-1.0-SNAPSHOT.jar
       ```
 3. **Controls:**
-    - `Key Up`: Jump / Restart after game over
+    - `Key Up`: Jump
     - `Key Down`: Duck
+    - `Key R`: Restart game
 
 ## Project Structure
 - [`src/main/java/ChromeDinosaur.java`](./src/main/java/ChromeDinosaur.java) - Main game logic and rendering
