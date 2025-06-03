@@ -152,12 +152,10 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
      * The cactus can be of three different sizes, each with a different probability.
      */
     public void placeCactus() {
-        if (gameOver)
-            return;
-
         Block cactus = null;
         Block pterodactyl = null;
         double placeCactusChance = Math.random();
+
         if (placeCactusChance > .90) { // 10% chance
             cactus = new Block(CACTUS_X, CACTUS_Y, CACTUS_3_WIDTH, CACTUS_HEIGHT, CACTUS_SMALL_3_IMG);
         } else if (placeCactusChance > .70) { // 20% chance
