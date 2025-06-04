@@ -73,6 +73,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private final Timer PLACE_CACTUS_TIMER;
     private final Timer PLACE_CLOUD_TIMER;
     private boolean isDucking = false;
+    private JButton resetButton;
 
     /**
      * Constructor for ChromeDinosaur class.
@@ -248,7 +249,6 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // If the game is over, draw the game over image
         if (gameOver) {
             g.drawImage(GAME_OVER_IMG, BOARD_WIDTH / 2 - GAME_OVER_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 - GAME_OVER_IMG.getHeight(null) / 2, null);
-            g.drawImage(RESET_IMG, BOARD_WIDTH / 2 - RESET_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 + GAME_OVER_IMG.getHeight(null) / 2 + 10, null);
             g.setFont(new Font("Courrier", Font.BOLD, 20));
             g.setColor(new Color(255, 0, 0, 95));
             g.drawString("Press R to restart", BOARD_WIDTH / 2 - 100, 75);
@@ -337,6 +337,22 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     }
 
     /**
+     * Shows the reset button when the game is over.
+     */
+    private void showResetButton() {
+        if (resetButton == null) {
+            resetButton = new JButton();
+            resetButton.setIcon(new ImageIcon(RESET_IMG));
+            resetButton.setBounds(BOARD_WIDTH / 2 - RESET_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 + GAME_OVER_IMG.getHeight(null) / 2 + 10, RESET_IMG.getWidth(null), RESET_IMG.getHeight(null));
+            resetButton.setContentAreaFilled(false);
+            resetButton.setBorderPainted(false);
+            resetButton.addActionListener(_ -> resetGame());
+            this.add(resetButton);
+            this.repaint();
+        }
+    }
+
+    /**
      * Resets the game to its initial state.
      */
     private void resetGame() {
@@ -350,6 +366,12 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         GAMELOOP.start();
         PLACE_CLOUD_TIMER.start();
         PLACE_CACTUS_TIMER.start();
+        if (resetButton != null) {
+            this.remove(resetButton);
+            resetButton = null; // Clear the reset button reference
+            this.repaint();
+        }
+        this.setFocusable(true);
     }
 
     @Override
@@ -360,6 +382,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             PLACE_CACTUS_TIMER.stop();
             PLACE_CLOUD_TIMER.stop();
             GAMELOOP.stop();
+            showResetButton(); // Show reset button when game is over
         }
     }
 
