@@ -56,7 +56,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     // Pterodactyls
     private final int PTERODACTYL_WIDTH; // Width of the pterodactyl image
     private final int PTERODACTYL_HEIGHT; // Height of the pterodactyl image
-    private final ArrayList<Block> pterodactylArray;
+    private final ArrayList<VeloBlock> pterodactylArray;
 
     // Physics
     private int velocityX = -12; // Horizontal velocity, for the cactus movement
@@ -156,7 +156,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
      */
     public void placeCactus() {
         Block cactus = null;
-        Block pterodactyl = null;
+        VeloBlock pterodactyl = null;
         double placeCactusChance = Math.random();
 
         if (placeCactusChance > .90) { // 10% chance
@@ -167,8 +167,9 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
             cactus = new Block(CACTUS_X, CACTUS_Y, CACTUS_1_WIDTH, CACTUS_HEIGHT, CACTUS_SMALL_1_IMG);
         } else if (placeCactusChance > .40) { // 10% chance
             // Add a pterodactyl instead of a cactus
+            double pterodactylVelocityX = 1.2;
             int pterodactylY = (int) (Math.random() * (BOARD_HEIGHT - PTERODACTYL_HEIGHT - 10)); // Random Y position
-            pterodactyl = new Block(CACTUS_X, pterodactylY, PTERODACTYL_WIDTH, PTERODACTYL_HEIGHT, PTERODACTYL_IMG);
+            pterodactyl = new VeloBlock(CACTUS_X, pterodactylY, PTERODACTYL_WIDTH, PTERODACTYL_HEIGHT, PTERODACTYL_IMG, pterodactylVelocityX);
         }
         
         if (cactus != null)
@@ -284,8 +285,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         cactusArray.removeIf(cactus -> cactus.x + cactus.width < 0);
 
         // Move the pterodactyls
-        for (Block pterodactyl : pterodactylArray) {
-            pterodactyl.x += (int) (velocityX * 1.2); // Pterodactyls move faster than cacti
+        for (VeloBlock pterodactyl : pterodactylArray) {
+            pterodactyl.x += (int) (velocityX * pterodactyl.velocityX); // Pterodactyls move faster than cacti
 
             if (collision(DINOSAUR, pterodactyl)) {
                 gameOver = true; // Set game over flag
