@@ -274,7 +274,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         for (Block cactus : cactusArray) {
             cactus.x += velocityX;
 
-            if (collision(DINOSAUR, cactus)) {
+            if (collision(cactus)) {
                 gameOver = true; // Set game over flag
                 DINOSAUR.image = DINOSAUR_DEAD_IMG; // Change dinosaur image to dead
                 return; // Exit the method to prevent further processing
@@ -288,7 +288,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         for (VeloBlock pterodactyl : pterodactylArray) {
             pterodactyl.x += (int) (velocityX * pterodactyl.velocityX); // Pterodactyls move faster than cacti
 
-            if (collision(DINOSAUR, pterodactyl)) {
+            if (collision(pterodactyl)) {
                 gameOver = true; // Set game over flag
                 DINOSAUR.image = DINOSAUR_DEAD_IMG; // Change dinosaur image to dead
                 return; // Exit the method to prevent further processing
@@ -323,18 +323,17 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
 
     /**
      * Checks for collision between two blocks.
-     * @param dinosaur The first block (Dinosaur).
-     * @param b The second block (Cactus / Pterodactyl).
+     * @param a The block to check for collision with the dinosaur.
      * @return true if there is a collision, false otherwise.
      */
-    private boolean collision(Block dinosaur, Block b) {
-        if (isDucking && dinosaur.y == DINOSAUR_Y)
-            return dinosaur.x < b.x + b.width && dinosaur.x + DINOSAUR_DUCK_WIDTH > b.x &&
-                    dinosaur.y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT) < b.y + b.height &&
-                    dinosaur.y + DINOSAUR_DUCK_HEIGHT > b.y;
+    private boolean collision(Block a) {
+        if (isDucking && DINOSAUR.y == DINOSAUR_Y)
+            return DINOSAUR.x < a.x + a.width && DINOSAUR.x + DINOSAUR_DUCK_WIDTH > a.x &&
+                    DINOSAUR.y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT) < a.y + a.height &&
+                    DINOSAUR.y + DINOSAUR_DUCK_HEIGHT > a.y;
 
-        return dinosaur.x < b.x + b.width && dinosaur.x + dinosaur.width > b.x &&
-                dinosaur.y < b.y + b.height && dinosaur.y + dinosaur.height > b.y;
+        return DINOSAUR.x < a.x + a.width && DINOSAUR.x + DINOSAUR.width > a.x &&
+                DINOSAUR.y < a.y + a.height && DINOSAUR.y + DINOSAUR.height > a.y;
     }
 
     /**
