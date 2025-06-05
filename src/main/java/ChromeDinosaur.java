@@ -218,9 +218,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         if (isDucking && DINOSAUR.y == DINOSAUR_Y) {
             int yPos = DINOSAUR_Y + (DINOSAUR_HEIGHT - DINOSAUR_DUCK_HEIGHT); // Adjust Y position for ducking
             g.drawImage(DINOSAUR_DUCK_IMG, DINOSAUR.x, yPos, DINOSAUR_DUCK_WIDTH, DINOSAUR_DUCK_HEIGHT, null);
-        } else {
+        } else
             g.drawImage(DINOSAUR.image, DINOSAUR.x, DINOSAUR.y, DINOSAUR.width, DINOSAUR.height, null);
-        }
 
         // Draw the cacti
         for (Block cactus : cactusArray) {
