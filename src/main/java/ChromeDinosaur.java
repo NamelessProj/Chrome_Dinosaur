@@ -29,7 +29,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
     private final int GROUND_WIDTH; // Width of the ground image
     // Cloud image
     public final Image CLOUD_IMG;
-    private final ArrayList<Block> cloudArray;
+    private final ArrayList<VeloBlock> cloudArray;
     // UI elements
     public final Image GAME_OVER_IMG;
     public final Image RESET_IMG;
@@ -186,7 +186,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         int cloudY = (int) (Math.random() * ((double) BOARD_HEIGHT / 2)); // Clouds appear in the upper half of the screen
         int cloudWidth = (int) (Math.random() * 100 + 50); // Random width between 50 and 150
         int cloudHeight = (int) (CLOUD_IMG.getHeight(null) * ((double) cloudWidth / CLOUD_IMG.getWidth(null))); // Maintain aspect ratio
-        Block cloud = new Block(CACTUS_X, cloudY, cloudWidth, cloudHeight, CLOUD_IMG);
+        double cloudVelocityX = Math.random() + 0.2; // Random speed between 0.2 and 1.2
+        VeloBlock cloud = new VeloBlock(CACTUS_X, cloudY, cloudWidth, cloudHeight, CLOUD_IMG, cloudVelocityX);
         cloudArray.add(cloud);
     }
 
@@ -297,8 +298,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         pterodactylArray.removeIf(pterodactyl -> pterodactyl.x + pterodactyl.width < 0);
 
         // Move the clouds
-        for (Block cloud : cloudArray) {
-            cloud.x += (int) (velocityX * 0.5); // Clouds move slower than cacti
+        for (VeloBlock cloud : cloudArray) {
+            cloud.x += (int) (velocityX * cloud.velocityX); // Clouds move at a variable speed
         }
 
         // Remove clouds that are off-screen
