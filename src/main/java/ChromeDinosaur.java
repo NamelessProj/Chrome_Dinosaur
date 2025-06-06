@@ -236,7 +236,7 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         // Write the commands in the bottom center
         g.setColor(new Color(5, 90, 185));
         g.setFont(new Font("Courrier", Font.BOLD, 15));
-        g.drawString("Press UP to jump, DOWN to duck, R to restart", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
+        g.drawString("Press UP to jump, DOWN to duck", BOARD_WIDTH / 2 - 150, BOARD_HEIGHT - 3);
 
         // Draw the score
         g.setColor(Color.BLACK);
@@ -248,12 +248,8 @@ public class ChromeDinosaur extends JPanel implements ActionListener, KeyListene
         g.drawString("High Score: " + highScore, BOARD_WIDTH - 200, 20);
 
         // If the game is over, draw the game over image
-        if (gameOver) {
+        if (gameOver)
             g.drawImage(GAME_OVER_IMG, BOARD_WIDTH / 2 - GAME_OVER_IMG.getWidth(null) / 2, BOARD_HEIGHT / 2 - GAME_OVER_IMG.getHeight(null) / 2, null);
-            g.setFont(new Font("Courrier", Font.BOLD, 20));
-            g.setColor(new Color(255, 0, 0, 95));
-            g.drawString("Press R to restart", BOARD_WIDTH / 2 - 100, 75);
-        }
     }
 
     /**
